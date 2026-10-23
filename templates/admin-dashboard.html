@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Team Generator | Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="/admin/dashboard" class="brand-logo">
+                <span class="brand-icon">⚙️</span>
+                <span>Admin Dashboard</span>
+            </a>
+            <div class="nav-actions">
+                <span class="badge badge-info" id="admin-user-badge">Admin</span>
+                <a href="/" target="_blank" class="btn btn-secondary btn-sm">Participant View ↗</a>
+                <button type="button" id="btn-logout" class="btn btn-danger btn-sm">Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Top Metrics Stats Row -->
+        <div class="stats-grid" style="margin-bottom: 2rem;">
+            <div class="card stat-box">
+                <div class="stat-value" id="metric-participants">0</div>
+                <div class="stat-label">Registered Participants</div>
+            </div>
+            <div class="card stat-box">
+                <div class="stat-value" id="metric-capacity">20</div>
+                <div class="stat-label">Capacity Target</div>
+            </div>
+            <div class="card stat-box">
+                <div class="stat-value" id="metric-teams">0</div>
+                <div class="stat-label">Teams Formed</div>
+            </div>
+            <div class="card stat-box">
+                <div class="stat-value" style="font-size: 1.25rem; margin-top: 0.35rem;" id="metric-published">Unpublished</div>
+                <div class="stat-label">Results Status</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Navigation Tabs -->
+        <div class="admin-tabs">
+            <button type="button" class="tab-btn active" data-tab="tab-roster">👥 Participants Roster</button>
+            <button type="button" class="tab-btn" data-tab="tab-teams">🎲 Team Generator & Preview</button>
+            <button type="button" class="tab-btn" data-tab="tab-settings">⚙️ Event Configuration</button>
+        </div>
+
+        <!-- ============================================================
+             TAB 1: PARTICIPANTS ROSTER
+             ============================================================ -->
+        <section id="tab-roster" class="tab-pane active">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h2>Registered Participants</h2>
+                        <p class="subtitle" style="margin: 0; text-align: left;">
+                            View, search, or remove registered attendees from this session.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem; align-items: center;">
+                        <input 
+                            type="text" 
+                            id="participant-search" 
+                            class="form-input" 
+                            placeholder="🔍 Filter by name..." 
+                            style="width: 240px; padding: 0.5rem 0.85rem;"
+                        >
+                        <button type="button" id="btn-refresh-roster" class="btn btn-secondary btn-sm">🔄 Refresh</button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Participant Name</th>
+                                <th>Assigned Team</th>
+                                <th>Registration Time</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participants-table-body">
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                                    Loading participants...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             TAB 2: TEAM GENERATOR & PREVIEWS
+             ============================================================ -->
+        <section id="tab-teams" class="tab-pane">
+            <div class="card">
+                <h2>Team Formation & Allocation</h2>
+                <p class="subtitle" style="text-align: left; margin-bottom: 1.5rem;">
+                    Select your preferred algorithm, preview the generated balance, and publish the results to participants.
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; background: var(--bg-main); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                    <!-- Formation Mode Picker -->
+                    <div>
+                        <label class="form-label">Formation Mode</label>
+                        <select id="gen-mode-select" class="form-select">
+                            <option value="team_count">Mode A: Fixed Number of Teams</option>
+                            <option value="max_size">Mode B: Maximum Team Size Limit</option>
+                        </select>
+                        <div class="form-hint" id="mode-explanation">
+                            Mode A distributes all participants as evenly as possible across N teams.
+                        </div>
+                    </div>
+
+                    <!-- Mode Setting Input -->
+                    <div id="wrapper-team-count">
+                        <label for="gen-team-count" class="form-label">Number of Teams</label>
+                        <input type="number" id="gen-team-count" class="form-input" min="1" max="50" value="4">
+                        <div class="form-hint">e.g. 4 teams of balanced sizes</div>
+                    </div>
+
+                    <div id="wrapper-max-size" style="display: none;">
+                        <label for="gen-max-size" class="form-label">Maximum Participants per Team</label>
+                        <input type="number" id="gen-max-size" class="form-input" min="1" max="50" value="5">
+                        <div class="form-hint">e.g. at most 5 people per team</div>
+                    </div>
+                </div>
+
+                <!-- Action Controls: Generate, Regenerate, Publish, Unpublish -->
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 2rem;">
+                    <button type="button" id="btn-generate-teams" class="btn btn-primary">
+                        <span>🎲 Generate Balanced Teams</span>
+                    </button>
+                    <button type="button" id="btn-regenerate-teams" class="btn btn-secondary" style="display: none;">
+                        <span>🔄 Regenerate / Reshuffle</span>
+                    </button>
+                    <button type="button" id="btn-publish-teams" class="btn btn-success" style="display: none;">
+                        <span>📢 Publish Results to Participants</span>
+                    </button>
+                    <button type="button" id="btn-unpublish-teams" class="btn btn-secondary" style="display: none;">
+                        <span>🔒 Unpublish Results</span>
+                    </button>
+                </div>
+
+                <!-- Generated Teams Previews -->
+                <h3>Generated Teams Preview</h3>
+                <div id="teams-preview-container" class="teams-grid" style="margin-top: 1rem;">
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--text-muted); background: var(--bg-main); border-radius: var(--radius-sm); border: 1px dashed var(--border-color);">
+                        No teams generated yet. Click "Generate Balanced Teams" above to form teams.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             TAB 3: EVENT CONFIGURATION & SESSION RESET
+             ============================================================ -->
+        <section id="tab-settings" class="tab-pane">
+            <div class="card">
+                <h2>Event & Session Configuration</h2>
+                <p class="subtitle" style="text-align: left; margin-bottom: 1.5rem;">
+                    Manage event metadata, registration limits, and registration status.
+                </p>
+
+                <form id="config-form" style="max-width: 600px;">
+                    <div class="form-group">
+                        <label for="conf-session-name" class="form-label">Event / Session Name</label>
+                        <input type="text" id="conf-session-name" class="form-input" maxlength="100" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="conf-expected" class="form-label">Expected Participant Count</label>
+                            <input type="number" id="conf-expected" class="form-input" min="1" max="1000" required>
+                            <div class="form-hint">Registration stops once limit is reached.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="conf-emoji-reuse" class="form-label">Allow Emoji Reuse?</label>
+                            <select id="conf-emoji-reuse" class="form-select">
+                                <option value="0">No (Unique Emojis per Participant)</option>
+                                <option value="1">Yes (Participants can share emojis)</option>
+                            </select>
+                            <div class="form-hint">Controls whether two attendees can claim the same avatar.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Registration Gateway</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="button" id="btn-toggle-reg-open" class="btn btn-success" style="flex: 1;">
+                                Open Registration
+                            </button>
+                            <button type="button" id="btn-toggle-reg-closed" class="btn btn-danger" style="flex: 1;">
+                                Close Registration
+                            </button>
+                        </div>
+                        <div class="form-hint" id="reg-status-hint">Current status: Open</div>
+                    </div>
+
+                    <button type="submit" id="btn-save-config" class="btn btn-primary" style="margin-top: 1rem;">
+                        💾 Save Session Settings
+                    </button>
+                </form>
+
+                <!-- Danger Zone: Session Reset -->
+                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px dashed #fca5a5;">
+                    <h3 style="color: #dc2626;">Danger Zone</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                        Resetting the session clears all registered participants and teams, resets publication status, and re-opens registration.
+                    </p>
+                    <button type="button" id="btn-trigger-reset" class="btn btn-danger">
+                        ⚠️ Reset Session & Clear All Data
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Delete Participant Confirmation Modal -->
+    <div id="delete-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🗑️</div>
+            <h3>Remove Participant?</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;" id="delete-modal-msg">
+                Are you sure you want to remove this participant?
+            </p>
+            <div class="modal-actions">
+                <button type="button" id="btn-cancel-delete" class="btn btn-secondary">Cancel</button>
+                <button type="button" id="btn-confirm-delete" class="btn btn-danger">Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Session Confirmation Modal -->
+    <div id="reset-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
+            <h3 style="color: #dc2626;">Confirm Full Session Reset</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                This action will delete all participants and generated teams for this event. This cannot be undone!
+            </p>
+            <div class="modal-actions">
+                <button type="button" id="btn-cancel-reset" class="btn btn-secondary">Cancel</button>
+                <button type="button" id="btn-confirm-reset" class="btn btn-danger">Yes, Reset Session</button>
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem;">
+        Emoji Team Generator &copy; 2026 • Administrator Console.
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/admin-dashboard.js"></script>
+</body>
+</html>
