@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Team Generator | Waiting Room</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="brand-logo">
+                <span class="brand-icon">🎲</span>
+                <span>Emoji Team Generator</span>
+            </a>
+            <div class="nav-actions">
+                <span id="session-badge" class="badge badge-open">
+                    <span class="dot dot-green"></span>
+                    <span id="session-status-text">Registration Open</span>
+                </span>
+                <a href="/admin/login" class="btn btn-secondary btn-sm">Admin</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="hero-card">
+            <!-- Registration Confirmed Header -->
+            <div class="avatar-badge">
+                <div class="avatar-emoji-large" id="participant-emoji">🚀</div>
+                <div class="avatar-name" id="participant-name">Participant Name</div>
+                <div class="badge badge-open" style="margin-top: 0.5rem;">
+                    ✓ Registration Confirmed
+                </div>
+            </div>
+
+            <!-- Published Teams Callout (Appears automatically when admin publishes results) -->
+            <div id="results-ready-banner" class="card" style="display: none; background: #ecfdf5; border-color: #6ee7b7; max-width: 520px; margin: 1.5rem auto;">
+                <div style="font-size: 2.25rem;">🏆</div>
+                <h2 style="color: #065f46; margin-bottom: 0.5rem;">Teams Have Been Published!</h2>
+                <p style="color: #047857; margin-bottom: 1.25rem;">
+                    The administrator has formed the teams. View your team assignment and teammates now!
+                </p>
+                <a href="/results" class="btn btn-success" style="font-size: 1.1rem; padding: 0.9rem 2rem;">
+                    <span>View Team Results</span>
+                    <span>🎉</span>
+                </a>
+            </div>
+
+            <!-- Registration Counter & Progress -->
+            <div style="max-width: 520px; margin: 0 auto;">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="stat-registered-count">0</div>
+                        <div class="stat-label">Registered</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="stat-expected-count">20</div>
+                        <div class="stat-label">Target Capacity</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="stat-teams-count">--</div>
+                        <div class="stat-label">Planned Teams</div>
+                    </div>
+                </div>
+
+                <!-- Live Progress Bar -->
+                <div class="progress-container">
+                    <div id="registration-progress" class="progress-bar"></div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem;">
+                    <span>Event: <strong id="event-name">Emoji Team Generator</strong></span>
+                    <span id="capacity-percentage">0% filled</span>
+                </div>
+
+                <!-- Waiting Status -->
+                <div id="waiting-notice" class="waiting-pulse">
+                    <span class="pulse-indicator"></span>
+                    <span id="waiting-text">Waiting for the organizer to shuffle and publish teams...</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.85rem;">
+        Emoji Team Generator &copy; 2026 • Live status updates automatically without reloading.
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/waiting-room.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Team Generator | Join Event</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="brand-logo">
+                <span class="brand-icon">🎲</span>
+                <span>Emoji Team Generator</span>
+            </a>
+            <div class="nav-actions">
+                <span id="session-badge" class="badge badge-open">
+                    <span class="dot dot-green"></span>
+                    <span id="session-status-text">Checking...</span>
+                </span>
+                <a href="/admin/login" class="btn btn-secondary btn-sm">Admin Portal</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Registration Section -->
+    <main class="main-content">
+        <div class="hero-card">
+            <h1>Welcome to the Team Shuffle! 🎉</h1>
+            <p class="subtitle">
+                Enter your name, pick your favorite lucky emoji, and get matched into awesome, balanced teams!
+            </p>
+
+            <!-- Already Registered Notice (Shown dynamically if participant has an active session) -->
+            <div id="already-registered-box" class="card" style="display: none; background: #eef2ff; border-color: #c7d2fe; max-width: 500px; margin: 0 auto 1.5rem;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;" id="existing-user-emoji">🦄</div>
+                <h3 style="color: #3730a3;" id="existing-user-text">You are registered as Participant!</h3>
+                <p style="color: #4338ca; font-size: 0.95rem; margin-bottom: 1rem;">
+                    You are already registered in this active session.
+                </p>
+                <div style="display: flex; gap: 0.75rem; justify-content: center;">
+                    <a href="/waiting-room" class="btn btn-primary btn-sm">Go to Waiting Room</a>
+                    <button type="button" id="btn-switch-user" class="btn btn-secondary btn-sm">Register as Someone Else</button>
+                </div>
+            </div>
+
+            <!-- Name Entry Form -->
+            <form id="name-form" style="max-width: 440px; margin: 0 auto;">
+                <div class="form-group">
+                    <label for="participant-name" class="form-label">What is your name?</label>
+                    <input 
+                        type="text" 
+                        id="participant-name" 
+                        class="form-input" 
+                        placeholder="e.g. Maya Lin, Alex Chen" 
+                        maxlength="50" 
+                        required 
+                        autocomplete="off"
+                        autofocus
+                    >
+                    <div class="form-hint">Must be 2 to 50 characters. No login or password required.</div>
+                </div>
+
+                <div id="registration-warning" style="display: none; margin-bottom: 1rem; color: #dc2626; font-size: 0.95rem; font-weight: 600;">
+                    Registration is currently closed by the administrator.
+                </div>
+
+                <button type="submit" id="btn-next" class="btn btn-primary" style="width: 100%;">
+                    <span>Next: Choose Your Emoji</span>
+                    <span>➡️</span>
+                </button>
+            </form>
+
+            <div style="margin-top: 2rem; color: var(--text-muted); font-size: 0.9rem;">
+                Session: <strong id="session-name-display">Loading event...</strong> • 
+                Participants: <strong id="participant-count-display">0</strong> / <span id="expected-count-display">--</span>
+            </div>
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.85rem;">
+        Emoji Team Generator &copy; 2026 • Fast, fair, and fun team allocations.
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/registration.js"></script>
+</body>
+</html>

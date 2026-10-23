@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Team Generator | Published Team Results</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="brand-logo">
+                <span class="brand-icon">🏆</span>
+                <span>Emoji Team Generator</span>
+            </a>
+            <div class="nav-actions">
+                <a href="/waiting-room" class="btn btn-secondary btn-sm">Waiting Room</a>
+                <a href="/admin/login" class="btn btn-secondary btn-sm">Admin</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Results Banner -->
+        <div class="results-header">
+            <h1 id="event-title">Official Team Rosters 🎉</h1>
+            <p class="subtitle" id="event-subtitle">
+                The teams have been generated and balanced. Find your squad below!
+            </p>
+
+            <!-- Search Filter Bar -->
+            <div style="max-width: 450px; margin: 0 auto 2rem;">
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    class="form-input" 
+                    placeholder="🔍 Search participant name or team..."
+                    autocomplete="off"
+                >
+            </div>
+        </div>
+
+        <!-- Unpublished Notice (Shown if results are unpublished) -->
+        <div id="unpublished-notice" class="hero-card" style="display: none; max-width: 600px; margin: 2rem auto;">
+            <div style="font-size: 3.5rem; margin-bottom: 1rem;">🔒</div>
+            <h2>Results Not Published Yet</h2>
+            <p class="subtitle">
+                The administrator has not published the official team assignments for this session yet.
+            </p>
+            <a href="/waiting-room" class="btn btn-primary">Return to Waiting Room</a>
+        </div>
+
+        <!-- Teams Grid -->
+        <div id="teams-container" class="teams-grid">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                Loading team rosters...
+            </div>
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem;">
+        Emoji Team Generator &copy; 2026 • Balanced and fair allocations.
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/results.js"></script>
+</body>
+</html>
